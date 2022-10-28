@@ -1,0 +1,142 @@
+// // CRUD create read update delete
+
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const uri = "mongodb+srv://dbUser:dbUserPassword@cluster0.h9dzpph.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+// const id = new ObjectId();
+// console.log( id.id.length );
+// console.log( id.toString().length );
+// console.log( id.getTimestamp() );
+
+const databaseName = 'task-manager';
+
+client.connect(err => {
+    if (err) return console.log( 'Error when connecting to the client!', err );
+    const db = client.db(databaseName);
+    const usersCollection = db.collection('users');
+    const tasksCollection = db.collection('tasks');
+    // perform actions on the collection object
+
+    // ---------------------------------------------
+    // DONE IN THE NEW MODERN WAY => PROMISES
+    // ---------------------------------------------
+    // updateOne
+    // usersCollection.updateOne({
+    //     _id: new ObjectId( '635642b4d9ad5b39e03f3636' )
+    // }, {
+    //     $set: {
+    //         name: 'Mikerson'
+    //     },
+    //     $inc: {
+    //         age: 1
+    //     }
+    // }).then( (result) => {
+    //     console.log( result );
+    // })
+    // .catch ( error => {
+    //     console.log( error );
+    // })
+
+    // updateMany
+    // tasksCollection.updateMany( {
+    //     completed: false
+    // }, {
+    //     $set: {
+    //         completed: true
+    //     }
+    // }).then( result => {
+    //     console.log( result.modifiedCount );
+    // }). catch( error => {
+    //     console.log( 'error', error );
+    // })
+
+    // usersCollection.deleteMany({ age: 63 })
+    //     .then( result => {
+    //         console.log( result.deletedCount );
+    //     })
+    //     .catch( error => {
+    //         console.log( error );
+    //     })
+
+    tasksCollection.deleteOne({ description: 'Buy seeds'})
+        .then( result => {
+            console.log( result.deletedCount )
+        })
+        .catch( error => {
+            console.log( error )
+        })
+
+
+        // ---------------------------------------------
+        // DONE IN THE OLD WAY = CALLBACKS
+        // ---------------------------------------------
+        // .insertOne !
+        // usersCollection.insertOne({
+        //     _id: id,
+        //     name: 'Vikram',
+        //     age: 31
+        // }, (error, result) => {
+        //     if (error) return console.log( 'Unable to insert user!' );
+
+        //     console.log( result.ops );
+        // });
+
+        // .insertMany !
+        // usersCollection.insertMany([
+        //     {
+        //         name: 'Jen',
+        //         age: 28
+        //     }, {
+        //         name: 'Gunther',
+        //         age: 27
+        //     }
+        // ], (error, result) => {
+        //     if (error) return console.log( 'Unable to insert documents!' );
+
+        //     console.log( result.ops );
+        // })
+
+        // tasksCollection.insertMany([
+        //     {
+        //         description: 'Buy seeds',
+        //         completed: true
+        //     }, {
+        //         description: 'Switch to winter wheels',
+        //         completed: false
+        //     }, {
+        //         description: 'Sleep earlier, at least tonight',
+        //         completed: true
+        //     }
+        // ], (error, result) => {
+        //     if (error) return console.log( 'Unable to insert documents!' );
+
+        //     console.log( result.ops );
+        // })
+
+        // fetching one document from db
+        // usersCollection.findOne({ _id: new ObjectId('63564b8f87667a3d184f3e99') }, (error, user) => {
+        //     if (error) return console.log( 'Error:', error );
+        //     console.log( user );
+        // })
+
+        // fetching more documents from collection
+        // usersCollection.find({ name: 'Sebastian' }).toArray( (error, users) => {
+        //     if (error) return console.log( 'Got error:', error );
+
+        //     console.log( users );
+        // })
+
+        // usersCollection.find({ name: 'Sebastian' }).count( (error, count) => {
+        //     if (error) return console.log( 'Got error:', error );
+
+        //     console.log( count );
+        // })
+
+        // tasksCollection.find( {completed: true} ).toArray( (error, tasks) => {
+        //     console.log( tasks );
+        // })
+
+    console.log( "Connected properly!" );
+    // client.close();
+});
